@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electromagnetic Theory Fundamentals</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        #sidebar {
+            width: 20px;
+            height: 100vh;
+            background-color: #f4f4f4;
+            padding: 20px;
+            overflow-y: auto;
+            transition: all 0.3s;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+        #sidebar:hover {
+            width: 250px;
+        }
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #sidebar:hover ul {
+            opacity: 1;
+        }
+        #sidebar ul li {
+            margin-bottom: 10px;
+        }
+        #sidebar ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+        #content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 60px;
+            transition: all 0.3s;
+        }
+        #sidebar:hover + #content {
+            margin-left: 290px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .math {
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 2px 4px;
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+        }
+        .math:hover {
+            background-color: #f0f0f0;
+        }
+        .math::after {
+            content: attr(data-definition);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            width: max-content;
+            max-width: 300px;
+            z-index: 1001;
+        }
+        .math:hover::after {
+            opacity: 1;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            #content {
+                margin-left: 0;
+            }
+            #sidebar:hover + #content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="sidebar">
+        <ul>
+            <li><a href="#chapter1">Chapter 1: Basic Concepts and Mathematical Background</a></li>
+            <li><a href="#chapter2">Chapter 2: Maxwell's Equations, Constitutive Relations, and Boundary Conditions</a></li>
+            <li><a href="#chapter3">Chapter 3: Transmission Line Theory</a></li>
+            <li><a href="#chapter4">Chapter 4: Wave Propagation in Unbounded Media</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <h1 id="chapter1">Chapter 1: Basic Concepts and Mathematical Background</h1>
+        <h2>1. Vector Analysis</h2>
+        <h3>Vector Operations:</h3>
+        <ul>
+            <li>Addition and Subtraction: Combine vectors component-wise.</li>
+            <li>Dot Product (•): <span class="math" data-definition="Calculates the scalar product of two vectors; used to find the angle between vectors and project one vector onto another. Physical Meaning: Relates to work done when a force moves an object.">$\vec{A} \cdot \vec{B} = |\vec{A}||\vec{B}|\cos\theta$</span></li>
+            <li>Cross Product (×): <span class="math" data-definition="Produces a vector perpendicular to two given vectors; magnitude equals the area of the parallelogram formed. Physical Meaning: Appears in torque and magnetic force calculations.">$\vec{A} \times \vec{B} = |\vec{A}||\vec{B}|\sin\theta \hat{n}$</span></li>
+        </ul>
+
+        <h2>2. Coordinate Systems</h2>
+        <h3>Cartesian (Rectangular) Coordinates (x, y, z):</h3>
+        <ul>
+            <li>Suitable for problems with rectangular symmetry.</li>
+            <li>Differential elements: <span class="math" data-definition="Infinitesimal elements in Cartesian coordinates">$dx, dy, dz$</span></li>
+        </ul>
+
+        <h3>Cylindrical Coordinates (ρ, φ, z):</h3>
+        <ul>
+            <li>Used for problems with cylindrical symmetry.</li>
+            <li>Relationships:
+                <span class="math" data-definition="Relationship between Cartesian and cylindrical coordinates">
+                    $x = \rho \cos\phi$<br>
+                    $y = \rho \sin\phi$
+                </span>
+            </li>
+            <li>Differential elements: <span class="math" data-definition="Infinitesimal elements in cylindrical coordinates">$d\rho, \rho d\phi, dz$</span></li>
+        </ul>
+
+        <h3>Spherical Coordinates (r, θ, φ):</h3>
+        <ul>
+            <li>Ideal for problems with spherical symmetry.</li>
+            <li>Relationships:
+                <span class="math" data-definition="Relationship between Cartesian and spherical coordinates">
+                    $x = r \sin\theta \cos\phi$<br>
+                    $y = r \sin\theta \sin\phi$<br>
+                    $z = r \cos\theta$
+                </span>
+            </li>
+            <li>Differential elements: <span class="math" data-definition="Infinitesimal elements in spherical coordinates">$dr, r d\theta, r \sin\theta d\phi$</span></li>
+        </ul>
+
+        <h2>3. Differential Operators</h2>
+        <h3>Gradient (∇f):</h3>
+        <p><span class="math" data-definition="Represents the rate and direction of the fastest increase of a scalar field f.">$\nabla f = \frac{\partial f}{\partial x}\hat{i} + \frac{\partial f}{\partial y}\hat{j} + \frac{\partial f}{\partial z}\hat{k}$</span></p>
+
+        <h3>Divergence (∇⋅A):</h3>
+        <p><span class="math" data-definition="Measures the net flow of a vector field A out of an infinitesimal volume.">$\nabla \cdot \vec{A} = \frac{\partial A_x}{\partial x} + \frac{\partial A_y}{\partial y} + \frac{\partial A_z}{\partial z}$</span></p>
+
+        <h3>Curl (∇×A):</h3>
+        <p><span class="math" data-definition="Represents the rotation or swirling strength of a vector field A.">$\nabla \times \vec{A} = \left(\frac{\partial A_z}{\partial y} - \frac{\partial A_y}{\partial z}\right)\hat{i} + \left(\frac{\partial A_x}{\partial z} - \frac{\partial A_z}{\partial x}\right)\hat{j} + \left(\frac{\partial A_y}{\partial x} - \frac{\partial A_x}{\partial y}\right)\hat{k}$</span></p>
+
+        <h3>Laplacian (∇²f):</h3>
+        <p><span class="math" data-definition="Second-order differential operator applied to scalar or vector fields.">$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2}$</span></p>
+
+        <h2>4. Fundamental Theorems of Vector Calculus</h2>
+        <h3>Gauss's Divergence Theorem:</h3>
+        <p><span class="math" data-definition="Relates the flux of a vector field through a closed surface to the divergence over the volume it encloses.">$\oint_S \vec{A} \cdot d\vec{S} = \int_V (\nabla \cdot \vec{A}) dV$</span></p>
+
+        <h3>Stokes's Theorem:</h3>
+        <p><span class="math" data-definition="Relates the circulation of a vector field around a closed loop to the curl over the surface bounded by the loop.">$\oint_C \vec{A} \cdot d\vec{l} = \int_S (\nabla \times \vec{A}) \cdot d\vec{S}$</span></p>
+
+        <h2>5. Maxwell's Equations (Overview)</h2>
+        <h3>Gauss's Law for Electricity:</h3>
+        <p>Differential Form: <span class="math" data-definition="The electric flux out of a closed surface is equal to the enclosed charge divided by the permittivity.">$\nabla \cdot \vec{D} = \rho_v$</span></p>
+        <p>Integral Form: <span class="math" data-definition="The electric flux out of a closed surface is equal to the enclosed charge divided by the permittivity.">$\oint_S \vec{D} \cdot d\vec{S} = \int_V \rho_v dV$</span></p>
+
+        <h3>Gauss's Law for Magnetism:</h3>
+        <p>Differential Form: <span class="math" data-definition="Magnetic monopoles do not exist; the net magnetic flux out of a closed surface is zero.">$\nabla \cdot \vec{B} = 0$</span></p>
+        <p>Integral Form: <span class="math" data-definition="Magnetic monopoles do not exist; the net magnetic flux out of a closed surface is zero.">$\oint_S \vec{B} \cdot d\vec{S} = 0$</span></p>
+
+        <h3>Faraday's Law of Electromagnetic Induction:</h3>
+        <p>Differential Form: <span class="math" data-definition="A changing magnetic field induces an electric field.">$\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}$</span></p>
+        <p>Integral Form: <span class="math" data-definition="A changing magnetic field induces an electric field.">$\oint_C \vec{E} \cdot d\vec{l} = -\int_S \frac{\partial \vec{B}}{\partial t} \cdot d\vec{S}$</span></p>
+
+        <h3>Ampère's Law with Maxwell's Addition:</h3>
+        <p>Differential Form: <span class="math" data-definition="Magnetic fields are generated by electric currents and changing electric fields.">$\nabla \times \vec{H} = \vec{J} + \frac{\partial \vec{D}}{\partial t}$</span></p>
+        <p>Integral Form: <span class="math" data-definition="Magnetic fields are generated by electric currents and changing electric fields.">$\oint_C \vec{H} \cdot d\vec{l} = \int_S (\vec{J} + \frac{\partial \vec{D}}{\partial t}) \cdot d\vec{S}$</span></p>
+
+        <h2>6. Boundary Conditions</h2>
+        <h3>At the Interface Between Two Media:</h3>
+        <h4>Electric Fields:</h4>
+        <ul>
+            <li>Tangential Component: <span class="math" data-definition="Continuous across the boundary">$E_{1t} = E_{2t}$</span></li>
+            <li>Normal Component: <span class="math" data-definition="Discontinuity equals surface charge density ρₛ">$D_{1n} - D_{2n} = \rho_s$</span></li>
+        </ul>
+        <h4>Magnetic Fields:</h4>
+        <ul>
+            <li>Tangential Component: <span class="math" data-definition="Discontinuity relates to surface current density Kₛ">$H_{1t} - H_{2t} = \vec{K_s} \times \hat{n}$</span></li>
+            <li>Normal Component: <span class="math" data-definition="Continuous across the boundary">$B_{1n} = B_{2n}$</span></li>
+        </ul>
+
+        <h2>7. Material Properties</h2>
+        <h3>Permittivity (ε):</h3>
+        <p><span class="math" data-definition="Defines how an electric field affects and is affected by a dielectric medium.">$\vec{D} = \varepsilon \vec{E}$</span></p>
+
+        <h3>Permeability (μ):</h3>
+        <p><span class="math" data-definition="Describes the ability of a material to support the formation of a magnetic field.">$\vec{B} = \mu \vec{H}$</span></p>
+
+        <h3>Conductivity (σ):</h3>
+        <p><span class="math" data-definition="Measures a material's ability to conduct electric current.">$\vec{J} = \sigma \vec{E}$</span></p>
+
+        <h2>8. Time-Varying Fields and Displacement Current</h2>
+        <h3>Displacement Current Density (∂D/∂t):</h3>
+        <p>Introduced to modify Ampère's Law to include time-varying electric fields.</p>
+        <p>Ensures continuity in the presence of capacitors and varying fields.</p>
+
+        <h3>Continuity Equation:</h3>
+        <p><span class="math" data-definition="Expresses the conservation of electric charge.">$\nabla \cdot \vec{J} + \frac{\partial \rho_v}{\partial t} = 0$</span></p>
+
+        <h2>9. Wave Equations</h2>
+        <p>Derived from Maxwell's equations for regions where there are no free charges or currents.</p>
+        <h3>Electric Field Wave Equation:</h3>
+        <p><span class="math" data-definition="Wave equation for electric field in charge-free, current-free regions.">$\nabla^2 \vec{E} - \mu\varepsilon\frac{\partial^2 \vec{E}}{\partial t^2} = 0$</span></p>
+        <h3>Magnetic Field Wave Equation:</h3>
+        <p><span class="math" data-definition="Wave equation for magnetic field in charge-free, current-free regions.">$\nabla^2 \vec{H} - \mu\varepsilon\frac{\partial^2 \vec{H}}{\partial t^2} = 0$</span></p>
+        <p>Describe the propagation of electromagnetic waves in a medium.</p>
+
+        <h1 id="chapter2">Chapter 2: Maxwell's Equations, Constitutive Relations, and Boundary Conditions</h1>
+        <h2>1. Introduction to Maxwell's Equations</h2>
+        <p>Maxwell's equations are the foundational laws of electromagnetism, describing how electric and magnetic fields are generated and altered by each other and by charges and currents. They consist of four equations, which can be expressed in both integral and differential forms.</p>
+
+        <h3>Gauss's Law for Electricity</h3>
+        <p>Integral Form: <span class="math" data-definition="The electric flux through a closed surface is equal to the total charge enclosed within that surface.">$\oint_S \vec{D} \cdot d\vec{S} = \int_V \rho_v dV$</span></p>
+        <p>Differential Form: <span class="math" data-definition="Relates the electric displacement field D to the volume charge density ρv.">$\nabla \cdot \vec{D} = \rho_v$</span></p>
+
+        <h3>Gauss's Law for Magnetism</h3>
+        <p>Integral Form: <span class="math" data-definition="The net magnetic flux out of any closed surface is zero.">$\oint_S \vec{B} \cdot d\vec{S} = 0$</span></p>
+        <p>Differential Form: <span class="math" data-definition="There are no magnetic monopoles; magnetic field lines are continuous loops.">$\nabla \cdot \vec{B} = 0$</span></p>
+
+        <h3>Faraday's Law of Electromagnetic Induction</h3>
+        <p>Integral Form: <span class="math" data-definition="A time-varying magnetic field induces an electromotive force (EMF).">$\oint_C \vec{E} \cdot d\vec{l} = -\int_S \frac{\partial \vec{B}}{\partial t} \cdot d\vec{S}$</span></p>
+        <p>Differential Form: <span class="math" data-definition="A time-varying magnetic field induces an electric field E.">$\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}$</span></p>
+
+        <h3>Ampère's Law with Maxwell's Addition</h3>
+        <p>Integral Form: <span class="math" data-definition="Magnetic fields are generated by electric currents and changing electric fields.">$\oint_C \vec{H} \cdot d\vec{l} = \int_S (\vec{J} + \frac{\partial \vec{D}}{\partial t}) \cdot d\vec{S}$</span></p>
+        <p>Differential Form: <span class="math" data-definition="Magnetic fields are generated by electric currents J and by changing electric fields ∂D/∂t (the displacement current).">$\nabla \times \vec{H} = \vec{J} + \frac{\partial \vec{D}}{\partial t}$</span></p>
+
+        <h2>2. Constitutive Relations</h2>
+        <h3>Electric Field and Electric Flux Density</h3>
+        <p>Relation: <span class="math" data-definition="Shows how the material's permittivity affects the electric field.">$\vec{D} = \varepsilon \vec{E}$</span></p>
+        <p>ε: Permittivity of the material.</p>
+
+        <h3>Magnetic Field Intensity and Magnetic Flux Density</h3>
+        <p>Relation: <span class="math" data-definition="Relates the magnetic field intensity H to the magnetic flux density B through the material's permeability.">$\vec{B} = \mu \vec{H}$</span></p>
+        <p>μ: Permeability of the material.</p>
+
+        <h3>Current Density and Electric Field</h3>
+        <p>Ohm's Law in Point Form: <span class="math" data-definition="Describes how the electric field causes a current density J in conductive materials.">$\vec{J} = \sigma \vec{E}$</span></p>
+        <p>σ: Conductivity of the material.</p>
+
+        <h2>3. Maxwell's Equations in Material Media</h2>
+        <p>Combining Maxwell's equations with the constitutive relations gives the equations specific to materials.</p>
+        <p>Maxwell's Equations in Homogeneous, Isotropic Media are simplified when ε, μ, σ are constants.</p>
+
+        <h2>4. The Continuity Equation</h2>
+        <p>Ensures the conservation of electric charge.</p>
+        <p>Equation: <span class="math" data-definition="The divergence of current density J plus the time rate of change of charge density ρv must be zero, reflecting charge conservation.">$\nabla \cdot \vec{J} + \frac{\partial \rho_v}{\partial t} = 0$</span></p>
+
+        <h2>5. Derivation of the Wave Equations</h2>
+        <p>By manipulating Maxwell's equations, wave equations for the electric and magnetic fields can be derived.</p>
+
+        <h3>Electric Field Wave Equation</h3>
+        <p>Equation: <span class="math" data-definition="Wave equation for electric field in general media.">$\nabla^2 \vec{E} - \mu\varepsilon\frac{\partial^2 \vec{E}}{\partial t^2} = \mu\sigma\frac{\partial \vec{E}}{\partial t} + \nabla(\nabla \cdot \vec{E})$</span></p>
+        <p>In Lossless, Source-Free, Homogeneous Media: <span class="math" data-definition="Simplified wave equation for electric field in lossless, source-free, homogeneous media.">$\nabla^2 \vec{E} - \mu\varepsilon\frac{\partial^2 \vec{E}}{\partial t^2} = 0$</span></p>
+
+        <h3>Magnetic Field Wave Equation</h3>
+        <p>Equation: <span class="math" data-definition="Wave equation for magnetic field in general media.">$\nabla^2 \vec{H} - \mu\varepsilon\frac{\partial^2 \vec{H}}{\partial t^2} = \mu\sigma\frac{\partial \vec{H}}{\partial t} + \nabla \times (\vec{J_s})$</span></p>
+        <p>In Lossless, Source-Free, Homogeneous Media: <span class="math" data-definition="Simplified wave equation for magnetic field in lossless, source-free, homogeneous media.">$\nabla^2 \vec{H} - \mu\varepsilon\frac{\partial^2 \vec{H}}{\partial t^2} = 0$</span></p>
+
+        <h2>6. Plane Electromagnetic Waves</h2>
+        <h3>Definition</h3>
+        <p>Solutions to the wave equations representing waves with constant amplitude and phase fronts that are planes perpendicular to the direction of propagation.</p>
+
+        <h3>Uniform Plane Waves</h3>
+        <p>Electric and Magnetic Fields:</p>
+        <p><span class="math" data-definition="Electric field of a uniform plane wave.">$\vec{E}(\vec{r},t) = \vec{E_0}e^{j(\omega t - \vec{k}\cdot\vec{r})}$</span></p>
+        <p><span class="math" data-definition="Magnetic field of a uniform plane wave.">$\vec{H}(\vec{r},t) = \vec{H_0}e^{j(\omega t - \vec{k}\cdot\vec{r})}$</span></p>
+        <p>$\vec{E_0}, \vec{H_0}$: Amplitudes of the fields.</p>
+        <p>ω: Angular frequency.</p>
+        <p>$\vec{k}$: Wave vector (direction and magnitude of propagation).</p>
+
+        <h3>Wave Propagation Parameters</h3>
+        <p>Wave Number (k): <span class="math" data-definition="Magnitude of the wave vector.">$k = \omega\sqrt{\mu\varepsilon}$</span></p>
+        <p>Phase Velocity (vp): <span class="math" data-definition="Speed at which the phase of the wave propagates.">$v_p = \frac{1}{\sqrt{\mu\varepsilon}}$</span></p>
+        <p>Intrinsic Impedance (η): <span class="math" data-definition="Ratio of the magnitudes of the electric and magnetic fields.">$\eta = \sqrt{\frac{\mu}{\varepsilon}}$</span></p>
+        <p>Relation between E and H: <span class="math" data-definition="Relationship between electric and magnetic field vectors.">$\vec{H} = \frac{1}{\eta}(\hat{k} \times \vec{E})$</span></p>
+        <p>$\hat{k}$: Unit vector in the direction of propagation.</p>
+
+        <h2>7. Polarization of Electromagnetic Waves</h2>
+        <p>Describes the orientation of the electric field vector as the wave propagates.</p>
+
+        <h3>Types of Polarization</h3>
+        <ul>
+            <li>Linear Polarization: Electric field vector maintains a constant direction.</li>
+            <li>Circular Polarization: Electric field vector rotates in a circle as the wave propagates; magnitude remains constant.</li>
+            <li>Elliptical Polarization: General case where the tip of the electric field vector traces an ellipse.</li>
+        </ul>
+
+        <h2>8. Energy and Power in Electromagnetic Fields</h2>
+        <h3>Poynting Vector</h3>
+        <p>Definition: <span class="math" data-definition="Represents the power flow per unit area (watts per square meter). Direction of energy propagation.">$\vec{S} = \vec{E} \times \vec{H}$</span></p>
+
+        <h3>Poynting's Theorem</h3>
+        <p>Energy Conservation Law: <span class="math" data-definition="The rate at which energy leaves a volume is equal to the decrease in electromagnetic energy within the volume plus the work done on charges.">$\nabla \cdot \vec{S} + \frac{\partial u}{\partial t} + \vec{J} \cdot \vec{E} = 0$</span></p>
+        <p>u: Energy density of the electromagnetic field.</p>
+        <p><span class="math" data-definition="Energy density of the electromagnetic field.">$u = \frac{1}{2}(\vec{E} \cdot \vec{D} + \vec{B} \cdot \vec{H})$</span></p>
+
+        <h2>9. Boundary Conditions Revisited</h2>
+        <p>Building upon Chapter 1, further details on boundary conditions for electromagnetic fields at interfaces between different media are provided.</p>
+
+        <h3>Reflection and Transmission at Normal Incidence</h3>
+        <p>Reflection Coefficient (Γ): <span class="math" data-definition="Ratio of reflected to incident wave amplitudes.">$\Gamma = \frac{\eta_2 - \eta_1}{\eta_2 + \eta_1}$</span></p>
+        <p>Transmission Coefficient (τ): <span class="math" data-definition="Ratio of transmitted to incident wave amplitudes.">$\tau = \frac{2\eta_2}{\eta_2 + \eta_1}$</span></p>
+        <p>$\eta_1, \eta_2$: Intrinsic impedances of media 1 and 2.</p>
+
+        <h3>Snell's Law and Refraction</h3>
+        <p>Law of Refraction: <span class="math" data-definition="Relationship between angles of incidence and refraction and the wave speeds in the two media.">$\frac{\sin \theta_1}{\sin \theta_2} = \frac{v_{p1}}{v_{p2}} = \sqrt{\frac{\mu_1\varepsilon_1}{\mu_2\varepsilon_2}}$</span></p>
+        <p>$\theta_1, \theta_2$: Angles of incidence and refraction.</p>
+
+        <h2>10. Complex Permittivity and Permeability</h2>
+        <p>In conductive or lossy materials, permittivity and permeability can be complex to account for losses.</p>
+
+        <h3>Complex Permittivity (εc):</h3>
+        <p>Definition: <span class="math" data-definition="Complex permittivity accounting for dielectric losses.">$\varepsilon_c = \varepsilon - j\frac{\sigma}{\omega}$</span></p>
+        <p>σ: Conductivity.</p>
+        <p>j: Imaginary unit.</p>
+
+        <h3>Attenuation and Phase Constants</h3>
+        <p>Propagation Constant (γ): <span class="math" data-definition="Complex propagation constant.">$\gamma = \alpha + j\beta$</span></p>
+        <p>α: Attenuation constant.</p>
+        <p>β: Phase constant.</p>
+        <p>Expressions:</p>
+        <p><span class="math" data-definition="Attenuation constant in lossy media.">$\alpha = \omega\sqrt{\frac{\mu\varepsilon}{2}} [\sqrt{1 + (\frac{\sigma}{\omega\varepsilon})^2} - 1]^{1/2}$</span></p>
+        <p><span class="math" data-definition="Phase constant in lossy media.">$\beta = \omega\sqrt{\frac{\mu\varepsilon}{2}} [\sqrt{1 + (\frac{\sigma}{\omega\varepsilon})^2} + 1]^{1/2}$</span></p>
+        <p>These constants describe how the amplitude and phase of the wave change as it propagates through a lossy medium.</p>
+
+        <h2>11. Skin Effect</h2>
+        <p>Describes how alternating current (AC) tends to flow near the surface of a conductor at high frequencies.</p>
+
+        <h3>Skin Depth (δ):</h3>
+        <p><span class="math" data-definition="The distance into the conductor where the current density drops to 1/e of its value at the surface.">$\delta = \frac{1}{\alpha} = \sqrt{\frac{2}{\omega\mu\sigma}}$</span></p>
+
+        <h1 id="chapter3">Chapter 3: Transmission Line Theory</h1>
+        <h2>1. Introduction to Transmission Lines</h2>
+        <p>Transmission lines are structures that guide electromagnetic waves from one point to another, such as coaxial cables, waveguides, and microstrip lines. Understanding transmission lines is essential for the analysis and design of high-frequency communication systems, antennas, and microwave circuits.</p>
+
+        <h2>2. Transmission Line Parameters</h2>
+<p>Transmission lines are characterized by four primary distributed parameters per unit length:</p>
+        <ul>
+            <li>Resistance (R): Represents the conductor's resistance, causing power loss due to heat.</li>
+            <li>Inductance (L): Accounts for the magnetic field around the conductor.</li>
+            <li>Conductance (G): Represents the dielectric losses in the insulating material between conductors.</li>
+            <li>Capacitance (C): Accounts for the electric field between conductors.</li>
+        </ul>
+        <p>These parameters are used to model the transmission line as a distributed network of infinitesimal circuit elements.</p>
+
+        <h2>3. Transmission Line Equations</h2>
+        <p>The voltage V(z,t) and current I(z,t) along the transmission line satisfy the telegrapher's equations:</p>
+        <h3>Voltage Equation:</h3>
+        <p><span class="math" data-definition="Telegrapher's equation for voltage along a transmission line.">$\frac{\partial V(z,t)}{\partial z} = -(R + j\omega L)I(z,t)$</span></p>
+        <h3>Current Equation:</h3>
+        <p><span class="math" data-definition="Telegrapher's equation for current along a transmission line.">$\frac{\partial I(z,t)}{\partial z} = -(G + j\omega C)V(z,t)$</span></p>
+        <p>ω: Angular frequency (ω = 2πf)</p>
+        <p>j: Imaginary unit ($\sqrt{-1}$)</p>
+        <p>z: Position along the transmission line</p>
+
+        <h2>4. Wave Equations on Transmission Lines</h2>
+        <p>By combining the telegrapher's equations, we obtain second-order differential equations for voltage and current:</p>
+        <h3>Voltage Wave Equation:</h3>
+        <p><span class="math" data-definition="Wave equation for voltage on a transmission line.">$\frac{\partial^2 V(z)}{\partial z^2} = \gamma^2V(z)$</span></p>
+        <h3>Current Wave Equation:</h3>
+        <p><span class="math" data-definition="Wave equation for current on a transmission line.">$\frac{\partial^2 I(z)}{\partial z^2} = \gamma^2I(z)$</span></p>
+        <p>γ: Propagation constant, defined as:</p>
+        <p><span class="math" data-definition="Propagation constant for a transmission line.">$\gamma = \alpha + j\beta = \sqrt{(R + j\omega L)(G + j\omega C)}$</span></p>
+        <p>α: Attenuation constant (nepers per unit length)</p>
+        <p>β: Phase constant (radians per unit length)</p>
+
+        <h2>5. Solutions to the Wave Equations</h2>
+        <p>The general solutions for voltage and current along the transmission line are:</p>
+        <h3>Voltage:</h3>
+        <p><span class="math" data-definition="General solution for voltage on a transmission line.">$V(z) = V^+e^{-\gamma z} + V^-e^{\gamma z}$</span></p>
+        <h3>Current:</h3>
+        <p><span class="math" data-definition="General solution for current on a transmission line.">$I(z) = \frac{V^+}{Z_0}e^{-\gamma z} - \frac{V^-}{Z_0}e^{\gamma z}$</span></p>
+        <p>$V^+$: Amplitude of the forward (traveling in the +z direction) voltage wave</p>
+        <p>$V^-$: Amplitude of the backward (traveling in the -z direction) voltage wave</p>
+        <p>$Z_0$: Characteristic impedance of the line</p>
+
+        <h2>6. Characteristic Impedance ($Z_0$)</h2>
+        <p>The characteristic impedance is a fundamental property of the transmission line, defined as:</p>
+        <p><span class="math" data-definition="Characteristic impedance of a transmission line.">$Z_0 = \sqrt{\frac{R + j\omega L}{G + j\omega C}}$</span></p>
+        <p>For lossless lines (R = 0, G = 0):</p>
+        <p><span class="math" data-definition="Characteristic impedance of a lossless transmission line.">$Z_0 = \sqrt{\frac{L}{C}}$</span></p>
+
+        <h2>7. Propagation Constant and Wave Parameters</h2>
+        <p>For lossless lines, the propagation constant simplifies to:</p>
+        <h3>Attenuation Constant (α):</h3>
+        <p><span class="math" data-definition="Attenuation constant for a lossless line.">$\alpha = 0$</span> (no loss)</p>
+        <h3>Phase Constant (β):</h3>
+        <p><span class="math" data-definition="Phase constant for a lossless line.">$\beta = \omega\sqrt{LC}$</span></p>
+        <h3>Phase Velocity ($v_p$):</h3>
+        <p><span class="math" data-definition="Phase velocity on a lossless transmission line.">$v_p = \frac{\omega}{\beta} = \frac{1}{\sqrt{LC}}$</span></p>
+
+        <h2>8. Reflection and Transmission Coefficients</h2>
+        <p>When a transmission line is terminated with a load impedance ($Z_L$), reflections occur unless $Z_L = Z_0$.</p>
+        <h3>Reflection Coefficient at the Load ($\Gamma_L$):</h3>
+        <p><span class="math" data-definition="Reflection coefficient at the load of a transmission line.">$\Gamma_L = \frac{Z_L - Z_0}{Z_L + Z_0}$</span></p>
+        <h3>Voltage at Any Point on the Line:</h3>
+        <p><span class="math" data-definition="Voltage at any point on a transmission line.">$V(z) = V_0^+(e^{-j\beta z} + \Gamma_Le^{j\beta z})$</span></p>
+        <p>$V_0^+$: Incident voltage amplitude at z = 0</p>
+
+        <h2>9. Standing Waves and Standing Wave Ratio (SWR)</h2>
+        <p>Due to reflections, standing waves are formed along the line.</p>
+        <h3>Voltage Standing Wave Ratio (VSWR or SWR):</h3>
+        <p><span class="math" data-definition="Voltage Standing Wave Ratio on a transmission line.">$VSWR = \frac{V_{max}}{V_{min}} = \frac{1 + |\Gamma_L|}{1 - |\Gamma_L|}$</span></p>
+        <p>$V_{max}, V_{min}$: Maximum and minimum voltage amplitudes along the line</p>
+
+        <h2>10. Input Impedance of the Transmission Line</h2>
+        <p>The input impedance at a distance l from the load is:</p>
+        <p><span class="math" data-definition="Input impedance of a transmission line at a distance l from the load.">$Z_{in}(l) = Z_0\frac{Z_L + Z_0\tanh(\gamma l)}{Z_0 + Z_L\tanh(\gamma l)}$</span></p>
+        <p>For lossless lines ($\gamma = j\beta$):</p>
+        <p><span class="math" data-definition="Input impedance of a lossless transmission line at a distance l from the load.">$Z_{in}(l) = Z_0\frac{Z_L + jZ_0\tan(\beta l)}{Z_0 + jZ_L\tan(\beta l)}$</span></p>
+
+        <h2>11. Special Cases</h2>
+        <h3>Short-Circuited Line ($Z_L = 0$):</h3>
+        <p><span class="math" data-definition="Input impedance of a short-circuited transmission line.">$Z_{in}(l) = jZ_0\tan(\beta l)$</span></p>
+        <h3>Open-Circuited Line ($Z_L \to \infty$):</h3>
+        <p><span class="math" data-definition="Input impedance of an open-circuited transmission line.">$Z_{in}(l) = -jZ_0\cot(\beta l)$</span></p>
+
+        <h2>12. Impedance Matching</h2>
+        <p>To maximize power transfer and minimize reflections, impedance matching is essential.</p>
+        <h3>Quarter-Wave Transformer:</h3>
+        <p>A λ/4 (quarter-wavelength) section of transmission line can match a load impedance to the line.</p>
+        <h3>Characteristic Impedance of the Transformer ($Z_{0t}$):</h3>
+        <p><span class="math" data-definition="Characteristic impedance of a quarter-wave transformer.">$Z_{0t} = \sqrt{Z_0Z_L}$</span></p>
+
+        <h2>13. Smith Chart</h2>
+        <p>The Smith Chart is a graphical tool used to solve transmission line problems involving complex impedances.</p>
+        <h3>Features:</h3>
+        <ul>
+            <li>Represents normalized impedance and admittance.</li>
+            <li>Circles of constant resistance and reactance.</li>
+            <li>Enables visualization of impedance transformations along the line.</li>
+        </ul>
+
+        <h2>14. Power Considerations</h2>
+        <h3>Instantaneous Power:</h3>
+        <p><span class="math" data-definition="Instantaneous power on a transmission line.">$p(z,t) = \text{Re}[V(z)e^{j\omega t}] \times \text{Re}[I^*(z)e^{-j\omega t}]$</span></p>
+        <h3>Average Power:</h3>
+        <p><span class="math" data-definition="Average power on a transmission line.">$P_{avg} = \frac{1}{2}\text{Re}[V(z)I^*(z)]$</span></p>
+        <p>$I^*(z)$: Complex conjugate of the current</p>
+
+        <h2>15. Lossy Transmission Lines</h2>
+        <p>For lines with non-negligible R and G:</p>
+        <h3>Attenuation Constant (α):</h3>
+        <p><span class="math" data-definition="Attenuation constant for a lossy transmission line.">$\alpha = \text{Re}[\gamma]$</span></p>
+        <h3>Phase Constant (β):</h3>
+        <p><span class="math" data-definition="Phase constant for a lossy transmission line.">$\beta = \text{Im}[\gamma]$</span></p>
+        <p>Approximate Expressions (when $R \ll \omega L$ and $G \ll \omega C$):</p>
+        <p><span class="math" data-definition="Approximate attenuation constant for a lossy transmission line.">$\alpha \approx \frac{R}{2Z_0} + \frac{GZ_0}{2}$</span></p>
+        <p><span class="math" data-definition="Approximate phase constant for a lossy transmission line.">$\beta \approx \omega\sqrt{LC}$</span></p>
+
+        <h2>16. Distortionless Line</h2>
+        <p>A transmission line is distortionless if $R/L = G/C$.</p>
+        <h3>Condition for No Signal Distortion:</h3>
+        <ul>
+            <li>The attenuation constant α is frequency-independent.</li>
+            <li>The phase constant β varies linearly with frequency.</li>
+        </ul>
+        <h3>Characteristic Impedance and Propagation Constant:</h3>
+        <p><span class="math" data-definition="Characteristic impedance of a distortionless line.">$Z_0 = \sqrt{\frac{R + j\omega L}{G + j\omega C}} = \sqrt{\frac{L}{C}}$</span></p>
+        <p><span class="math" data-definition="Propagation constant of a distortionless line.">$\gamma = \sqrt{RG} + j\omega\sqrt{LC}$</span></p>
+
+        <h2>17. Transient Analysis</h2>
+        <p>When signals change abruptly, transient analysis is necessary.</p>
+        <h3>Reflections due to Discontinuities:</h3>
+        <ul>
+            <li>Transients occur when switching or when there is a mismatch in impedance.</li>
+            <li>The voltage and current can be analyzed using reflection diagrams or the method of characteristics.</li>
+        </ul>
+
+        <h2>18. Applications</h2>
+        <ul>
+            <li>Communication Systems: Transmission lines are used in RF and microwave communications to transmit signals with minimal loss and distortion.</li>
+            <li>Antenna Feed Lines: Impedance matching is critical to ensure efficient power transfer between antennas and transmitters/receivers.</li>
+            <li>High-Speed Digital Circuits: Transmission line effects become significant at high frequencies, affecting signal integrity.</li>
+        </ul>
+
+        <h1 id="chapter4">Chapter 4: Wave Propagation in Unbounded Media</h1>
+        <h2>1. Introduction to Electromagnetic Wave Propagation</h2>
+        <p>Electromagnetic waves propagate through different media, and understanding their behavior in unbounded (infinite) media is fundamental. This chapter explores how waves travel in free space, dielectrics, and conductors, emphasizing the mathematical descriptions and physical interpretations.</p>
+
+        <h2>2. Uniform Plane Waves</h2>
+        <h3>Definition</h3>
+        <p>Uniform Plane Wave: A wave whose electric (E) and magnetic (H) field vectors are uniform (constant magnitude and direction) over any plane perpendicular to the direction of propagation.</p>
+        <h3>Mathematical Representation</h3>
+        <p>Electric Field: <span class="math" data-definition="Electric field of a uniform plane wave.">$\vec{E}(\vec{r},t) = \vec{E_0}e^{j(\omega t - \vec{k}\cdot\vec{r})}$</span></p>
+        <p>Magnetic Field: <span class="math" data-definition="Magnetic field of a uniform plane wave.">$\vec{H}(\vec{r},t) = \vec{H_0}e^{j(\omega t - \vec{k}\cdot\vec{r})}$</span></p>
+        <p>$\vec{E_0}, \vec{H_0}$: Amplitudes of the fields.</p>
+        <p>ω: Angular frequency.</p>
+        <p>$\vec{k}$: Wave vector, $\vec{k} = \hat{n}k$, where $\hat{n}$ is the unit propagation vector.</p>
+        <h3>Wave Parameters</h3>
+        <p>Wave Number (k): <span class="math" data-definition="Wave number of a uniform plane wave.">$k = \omega\sqrt{\mu\varepsilon}$</span></p>
+        <p>Phase Velocity ($v_p$): <span class="math" data-definition="Phase velocity of a uniform plane wave.">$v_p = \frac{\omega}{k} = \frac{1}{\sqrt{\mu\varepsilon}}$</span></p>
+        <p>Intrinsic Impedance (η): <span class="math" data-definition="Intrinsic impedance of the medium.">$\eta = \sqrt{\frac{\mu}{\varepsilon}}$</span></p>
+        <p>Relates the electric and magnetic fields: <span class="math" data-definition="Relationship between E and H fields in a uniform plane wave.">$\vec{H} = \frac{1}{\eta}(\hat{k} \times \vec{E})$</span></p>
+
+        <h2>3. Propagation in Lossless Dielectric Media</h2>
+        <h3>Properties</h3>
+        <p>Lossless Medium: Perfect dielectric with no conductivity (σ = 0).</p>
+        <p>Propagation Constant (γ): <span class="math" data-definition="Propagation constant in a lossless dielectric medium.">$\gamma = j\beta = j\omega\sqrt{\mu\varepsilon}$</span></p>
+        <p>Attenuation Constant (α): <span class="math" data-definition="Attenuation constant in a lossless dielectric medium.">$\alpha = 0$</span> (no loss).</p>
+        <h3>Wave Equations</h3>
+        <p>Electric Field: <span class="math" data-definition="Wave equation for electric field in a lossless dielectric medium.">$\nabla^2\vec{E} = \mu\varepsilon\frac{\partial^2\vec{E}}{\partial t^2}$</span></p>
+        <p>Magnetic Field: <span class="math" data-definition="Wave equation for magnetic field in a lossless dielectric medium.">$\nabla^2\vec{H} = \mu\varepsilon\frac{\partial^2\vec{H}}{\partial t^2}$</span></p>
+
+        <h2>4. Propagation in Lossy Dielectric Media</h2>
+        <h3>Properties</h3>
+        <p>Conductive Medium: Dielectric with finite conductivity (σ ≠ 0).</p>
+        <p>Complex Permittivity ($\varepsilon_c$): <span class="math" data-definition="Complex permittivity of a lossy dielectric medium.">$\varepsilon_c = \varepsilon - j\frac{\sigma}{\omega}$</span></p>
+        <p>Propagation Constant (γ): <span class="math" data-definition="Propagation constant in a lossy dielectric medium.">$\gamma = \alpha + j\beta = j\omega\sqrt{\mu\varepsilon_c}$</span></p>
+        <h3>Attenuation and Phase Constants</h3>
+        <p>Attenuation Constant (α): <span class="math" data-definition="Attenuation constant in a lossy dielectric medium.">$\alpha = \omega\sqrt{\frac{\mu\varepsilon}{2}}[\sqrt{1+(\frac{\sigma}{\omega\varepsilon})^2}-1]^{1/2}$</span></p>
+        <p>Phase Constant (β): <span class="math" data-definition="Phase constant in a lossy dielectric medium.">$\beta = \omega\sqrt{\frac{\mu\varepsilon}{2}}[\sqrt{1+(\frac{\sigma}{\omega\varepsilon})^2}+1]^{1/2}$</span></p>
+        <h3>Skin Depth (δ)</h3>
+        <p>Definition: <span class="math" data-definition="Skin depth in a lossy medium.">$\delta = \frac{1}{\alpha}$</span></p>
+        <p>Interpretation: Distance over which the wave amplitude decreases to 1/e of its value at the surface.</p>
+
+        <h2>5. Propagation in Good Conductors</h2>
+        <h3>High Conductivity Approximation</h3>
+        <p>For good conductors (σ ≫ ωε):</p>
+        <p>Propagation Constant: <span class="math" data-definition="Propagation constant in a good conductor.">$\gamma \approx (1+j)\sqrt{\frac{\omega\mu\sigma}{2}}$</span></p>
+        <p>Attenuation Constant: <span class="math" data-definition="Attenuation constant in a good conductor.">$\alpha \approx \beta \approx \sqrt{\pi f\mu\sigma}$</span></p>
+        <h3>Implications</h3>
+        <ul>
+            <li>Rapid Attenuation: Electromagnetic waves are heavily attenuated in good conductors.</li>
+            <li>Surface Currents: Currents are confined near the surface due to the skin effect.</li>
+        </ul>
+
+        <h2>6. Polarization of Electromagnetic Waves</h2>
+        <h3>Types of Polarization</h3>
+        <ul>
+            <li>Linear Polarization: Electric field vector maintains a constant direction.</li>
+            <li>Circular Polarization: Electric field rotates in a circle, magnitude remains constant.</li>
+            <li>Elliptical Polarization: General case where the tip of the electric field vector traces an ellipse.</li>
+        </ul>
+        <h3>Mathematical Representation</h3>
+        <p>Electric Field Components: <span class="math" data-definition="Electric field components of a polarized wave.">$\vec{E} = \hat{x}E_{x0}e^{j(\omega t-kz+\phi_x)} + \hat{y}E_{y0}e^{j(\omega t-kz+\phi_y)}$</span></p>
+        <p>$E_{x0}, E_{y0}$: Amplitudes along x and y axes.</p>
+        <p>$\phi_x, \phi_y$: Phase angles.</p>
+
+        <h2>7. Reflection and Transmission at Planar Boundaries</h2>
+        <h3>Normal Incidence</h3>
+        <p>Reflection Coefficient (Γ): <span class="math" data-definition="Reflection coefficient for normal incidence.">$\Gamma = \frac{\eta_2 - \eta_1}{\eta_2 + \eta_1}$</span></p>
+        <p>Transmission Coefficient (T): <span class="math" data-definition="Transmission coefficient for normal incidence.">$T = \frac{2\eta_2}{\eta_2 + \eta_1}$</span></p>
+        <p>$\eta_1, \eta_2$: Intrinsic impedances of media 1 and 2.</p>
+        <h3>Oblique Incidence</h3>
+        <p>Snell's Law: <span class="math" data-definition="Snell's law of refraction.">$\frac{\sin \theta_i}{\sin \theta_t} = \frac{v_{p1}}{v_{p2}} = \sqrt{\frac{\mu_1\varepsilon_1}{\mu_2\varepsilon_2}}$</span></p>
+        <p>$\theta_i$: Angle of incidence.</p>
+        <p>$\theta_t$: Angle of transmission (refraction).</p>
+        <h3>Critical Angle and Total Internal Reflection:</h3>
+        <p>Occurs when $\theta_t = 90°$, leading to:</p>
+        <p><span class="math" data-definition="Critical angle for total internal reflection.">$\theta_c = \sin^{-1}(\frac{v_{p2}}{v_{p1}})$</span></p>
+        <h3>Fresnel Equations</h3>
+        <p>Parallel (p) Polarization:</p>
+        <p>Reflection Coefficient: <span class="math" data-definition="Reflection coefficient for parallel polarization.">$\Gamma_p = \frac{\eta_2\cos \theta_i - \eta_1\cos \theta_t}{\eta_2\cos \theta_i + \eta_1\cos \theta_t}$</span></p>
+        <p>Perpendicular (s) Polarization:</p>
+        <p>Reflection Coefficient: <span class="math" data-definition="Reflection coefficient for perpendicular polarization.">$\Gamma_s = \frac{\eta_1\cos \theta_i - \eta_2\cos \theta_t}{\eta_1\cos \theta_i + \eta_2\cos \theta_t}$</span></p>
+
+        <h2>8. Brewster's Angle</h2>
+        <p>Definition: The angle of incidence at which there is no reflection for the parallel polarization ($\Gamma_p = 0$).</p>
+        <p>Expression: <span class="math" data-definition="Brewster's angle.">$\theta_B = \tan^{-1}(\frac{\eta_2}{\eta_1})$</span></p>
+
+        <h2>9. Poynting Vector and Power Flow</h2>
+        <h3>Poynting Vector</h3>
+        <p>Definition: <span class="math" data-definition="Poynting vector.">$\vec{S} = \vec{E} \times \vec{H}^*$</span></p>
+        <p>$\vec{H}^*$: Complex conjugate of the magnetic field.</p>
+        <p>Average Power Density: <span class="math" data-definition="Average power density.">$\langle\vec{S}\rangle = \frac{1}{2}\text{Re}[\vec{E} \times \vec{H}^*]$</span></p>
+        <h3>Power Transmission and Reflection</h3>
+        <p>Transmitted Power Density: <span class="math" data-definition="Transmitted power density.">$\langle\vec{S_t}\rangle = |T|^2\langle\vec{S_i}\rangle$</span></p>
+        <p>Reflected Power Density: <span class="math" data-definition="Reflected power density.">$\langle\vec{S_r}\rangle = |\Gamma|^2\langle\vec{S_i}\rangle$</span></p>
+        <p>$\langle\vec{S_i}\rangle$: Incident power density.</p>
+
+        <h2>10. Electromagnetic Wave Equation Solutions</h2>
+        <h3>General Solution in Homogeneous Media</h3>
+        <p>Wave Equation: <span class="math" data-definition="Wave equation for electromagnetic waves.">$\nabla^2\vec{E} - \mu\varepsilon\frac{\partial^2\vec{E}}{\partial t^2} = 0$</span></p>
+        <p>Plane Wave Solutions: <span class="math" data-definition="Plane wave solution to the wave equation.">$\vec{E}(\vec{r},t) = \vec{E_0}e^{j(\omega t-\vec{k}\cdot\vec{r})}$</span></p>
+        <h3>Boundary Conditions</h3>
+        <p>At Interfaces:</p>
+        <ul>
+            <li>Tangential Components of E and H are continuous across boundaries unless there are surface charges or currents.</li>
+        </ul>
+
+        <h2>11. Dispersion and Group Velocity</h2>
+        <h3>Dispersion</h3>
+        <p>Definition: Variation of phase velocity with frequency due to material properties.</p>
+        <p>Dispersion Relation: <span class="math" data-definition="Dispersion relation.">$\omega = \omega(k)$</span></p>
+        <h3>Group Velocity ($v_g$)</h3>
+        <p>Definition: <span class="math" data-definition="Group velocity.">$v_g = \frac{d\omega}{dk}$</span></p>
+        <p>Physical Meaning: Speed at which the envelope of a wave packet (or modulation) propagates.</p>
+
+        <h2>12. Anisotropic and Dispersive Media</h2>
+        <h3>Anisotropic Media</h3>
+        <p>Properties: Media where permittivity ε and permeability μ are tensor quantities.</p>
+        <p>Effect: Wave propagation depends on direction relative to the material's principal axes.</p>
+        <h3>Dispersive Media</h3>
+        <p>Frequency-Dependent Permittivity: <span class="math" data-definition="Complex frequency-dependent permittivity.">$\varepsilon(\omega) = \varepsilon'(\omega) - j\varepsilon''(\omega)$</span></p>
+        <p>Implications: Phase and group velocities vary with frequency, affecting signal integrity.</p>
+
+        <h2>13. Complex Wave Propagation</h2>
+        <h3>Complex Wave Vector</h3>
+        <p>Definition: <span class="math" data-definition="Complex wave vector.">$\vec{k} = \vec{k'} - j\vec{k''}$</span></p>
+        <p>Interpretation:</p>
+        <ul>
+            <li>$\vec{k'}$: Phase shift per unit length.</li>
+            <li>$\vec{k''}$: Attenuation per unit length.</li>
+        </ul>
+        <h3>Propagation in Complex Media</h3>
+        <p>Exponentially Attenuated Waves: <span class="math" data-definition="Exponentially attenuated wave in complex media.">$\vec{E}(\vec{r}) = \vec{E_0}e^{-\vec{k''}\cdot\vec{r}}e^{j(\omega t-\vec{k'}\cdot\vec{r})}$</span></p>
+
+        <h2>14. Examples and Applications</h2>
+        <h3>Wireless Communication</h3>
+        <p>Free Space Propagation: Analysis of signal attenuation and phase changes over distance.</p>
+        <h3>Remote Sensing and Radar</h3>
+        <p>Reflection and Refraction: Understanding wave interactions with atmospheric layers and the Earth's surface.</p>
+        <h3>Optical Fibers</h3>
+        <p>Total Internal Reflection: Guiding light through dielectric waveguides based on critical angles.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mathElements = document.querySelectorAll('.math');
+            mathElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    alert('Mathematical formula: ' + this.textContent + '\nDefinition: ' + this.getAttribute('data-definition'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
